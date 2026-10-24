@@ -10,7 +10,7 @@ pub use nrf_sdc::{mpsl::MultiprotocolServiceLayer, Error as SoftdeviceError, Sof
 use static_cell::StaticCell;
 
 /// Default memory allocation for softdevice controller in bytes.
-const SDC_MEMORY_SIZE: usize = 1432; // bytes
+const SDC_MEMORY_SIZE: usize = 2048;
 
 /// Softdevice Bluetooth Controller Builder.
 pub struct BleControllerBuilder<'d> {
@@ -160,8 +160,8 @@ fn build_sdc<'d, const N: usize>(
     mem: &'d mut sdc::Mem<N>,
 ) -> Result<nrf_sdc::SoftdeviceController<'d>, nrf_sdc::Error> {
     sdc::Builder::new()?
-        .support_adv()?
-        .support_peripheral()?
+        .support_adv()
+        .support_peripheral()
         .peripheral_count(1)?
         .build(p, rng, mpsl, mem)
 }

@@ -1,6 +1,6 @@
 [package]
 name = "microbit-bsp"
-version = "0.5.0"
+version = "0.8.0"
 edition = "2021"
 description = "An embassy-based boards support package (BSP) for BBC Micro:bit v2"
 license = "MIT OR Apache-2.0"
@@ -10,15 +10,7 @@ repository = "https://github.com/lulf/microbit-bsp"
 rust-version = "1.83"
 
 [dependencies]
-embassy-nrf = { version = "0.9.0", features = [
-    "gpiote",
-    "nfc-pins-as-gpio",
-    "nrf52833",
-    "time-driver-rtc1",
-    "time",
-] }
-embassy-time = { version = "0.5", default-features = false }
-embassy-sync = { version = "0.7.2" }
+
 cortex-m = { version = "0.7.7" }
 embedded-hal = "1.0"
 lsm303agr = { version = "1.1.0", features = ["async"] }
@@ -27,17 +19,52 @@ futures = { version = "0.3", default-features = false }
 defmt = { version = "^1.0.1", optional = true }
 heapless = "0.9.1"
 
+
 # trouble bluetooth dependencies
-nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc.git", rev = "d4d244d5ce21f59fa2263333cb1d8f2a5d997145", default-features = false, features = [
+nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc.git", rev = "a22ca716c807496f98ae8d95cba5622b9fdd8a00", default-features = false, features = [
     "defmt",
     "peripheral",
+    "central",
     "nrf52833",
 ], optional = true }
-nrf-mpsl = { git = "https://github.com/alexmoon/nrf-sdc.git", rev = "d4d244d5ce21f59fa2263333cb1d8f2a5d997145", default-features = false, features = [
+nrf-mpsl = { git = "https://github.com/alexmoon/nrf-sdc.git", rev = "a22ca716c807496f98ae8d95cba5622b9fdd8a00", default-features = false, features = [
     "defmt",
     "critical-section-impl",
 ], optional = true }
+
+
+# nrf-sdc = { version = "0.4.0", default-features = false, features = [
+#     "defmt",
+#     "peripheral",
+#     "nrf52833",
+# ], optional = true }
+# nrf-mpsl = { version = "0.4.0", default-features = false, features = [
+#     "defmt",
+#     "critical-section-impl",
+# ], optional = true }
 static_cell = "2"
+
+embassy-executor = { version = "0.10", default-features = false, features = [
+    "platform-cortex-m",
+    "executor-thread",
+    "defmt",
+    "executor-interrupt",
+] }
+embassy-time = { version = "0.5", default-features = false, features = [
+    "defmt",
+    "defmt-timestamp-uptime",
+] }
+embassy-nrf = { version = "0.11", default-features = false, features = [
+    "defmt",
+    "time-driver-rtc1",
+    "gpiote",
+    "unstable-pac",
+    "nfc-pins-as-gpio",
+    "rt",
+] }
+embassy-futures = "0.1.1"
+embassy-sync = { version = "0.8", features = ["defmt"] }
+
 
 [features]
 default = ["defmt"]
@@ -48,9 +75,4 @@ defmt = [
     "embassy-time/defmt",
     "embassy-time/defmt-timestamp-uptime",
 ]
-trouble = [
-    "embassy-nrf/unstable-pac",
-    "embassy-nrf/rt",
-    "nrf-sdc",
-    "nrf-mpsl",
-]
+trouble = ["embassy-nrf/unstable-pac", "embassy-nrf/rt", "nrf-sdc", "nrf-mpsl"]

@@ -23,7 +23,7 @@ impl<'a> Microphone<'a> {
     ) -> Self {
         let config = Config::default();
         let mut channel_config = ChannelConfig::single_ended(mic);
-        channel_config.gain = Gain::GAIN4;
+        channel_config.gain = Gain::Gain4;
         let saadc = Saadc::new(saadc, irq, config, [channel_config]);
         let enable = Output::new(micen, Level::Low, OutputDrive::HighDrive);
         Self { adc: saadc, enable }
